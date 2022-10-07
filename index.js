@@ -33,7 +33,7 @@ async function checkDB(arr, db, coll) {
     let filter = await Promise.all(arr.map(async obj => {
         return await new Promise(async (resolve, reject) => {
             let location = await collection.findOne({customerNumber: obj.customerNumber})
-            if(location) {
+            if(!location) {
                 resolve(obj)
             } else {
                 reject(obj.customerNumber)
@@ -43,7 +43,7 @@ async function checkDB(arr, db, coll) {
         })
     }))
 
-    fs.writeFileSync('data/10-06-2022/add-listc.json', JSON.stringify(filter.filter(obj => obj.found == true ? 0 : 1)))
+    fs.writeFileSync('data/10-07-2022/add-list.json', JSON.stringify(filter.filter(obj => obj.found == true ? 0 : 1)))
 
     await client.close()
 }
@@ -74,7 +74,7 @@ async function checkDB(arr, db, coll) {
 
 
 csvtojson()
-.fromFile("data/10-06-2022/closed.csv")
+.fromFile("data/10-07-2022/open.csv")
 .then(csvData => {
     let dealers = csvData.map(i => {
             return {
